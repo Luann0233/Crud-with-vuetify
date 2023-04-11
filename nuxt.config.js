@@ -3,8 +3,8 @@ import colors from 'vuetify/es5/util/colors'
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - crud-onfly',
-    title: 'crud-onfly',
+    titleTemplate: '%s - crud-with-vuetify',
+    title: 'crud-with-vuetify',
     htmlAttrs: {
       lang: 'en'
     },

@@ -1,4 +1,4 @@
-# crud-onfly
+# crud-with-vuetify
 
 ## Build Setup
 
