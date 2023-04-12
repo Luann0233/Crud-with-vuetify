@@ -20,8 +20,8 @@ export default {
   data () {
     return {
       items: [
-        { label: 'Ativo', value: 'inactive' },
-        { label: 'Inativo', value: 'active' },
+        { label: 'Ativo', value: 'active' },
+        { label: 'Inativo', value: 'inactive' },
         { label: 'Ambos', value: '' }
       ]
     }
