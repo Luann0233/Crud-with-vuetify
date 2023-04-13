@@ -21,9 +21,17 @@
             inset
             vertical
           />
+
           <v-spacer />
 
-          <DialogUsuario />
+          <v-btn
+            color="primary"
+            dark
+            class="mb-2"
+            @click="showDialog=true"
+          >
+            Criar Usuário
+          </v-btn>
         </v-toolbar>
       </template>
 
@@ -53,10 +61,11 @@
         <v-icon
           small
           class="mr-2"
-          @click="editItem(item)"
+          @click="editUser(item)"
         >
           mdi-pencil
         </v-icon>
+
         <v-icon
           small
           @click="deleteItem(item)"
@@ -69,6 +78,8 @@
         Sem Dados
       </template>
     </v-data-table>
+
+    <DialogUsuario :visible="showDialog" @close="showDialog=false" />
   </div>
 </template>
 
@@ -131,7 +142,8 @@ export default {
           value: 'actions',
           sortable: false
         }
-      ]
+      ],
+      showDialog: false
     }
   },
 
@@ -194,6 +206,11 @@ export default {
     ativarUser (user) {
       const acao = user.status === 'active' ? 'desativar' : 'ativar'
       this.ativarDesativarUsuario(user.id, acao)
+    },
+
+    editUser (user) {
+      this.showDialog = true
+      this.user = Object.assign({}, user)
     }
   }
 }

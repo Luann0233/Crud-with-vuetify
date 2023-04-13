@@ -1,24 +1,9 @@
 <template>
   <v-dialog
-    v-model="dialog"
+    v-model="show"
     max-width="500px"
   >
-    <template #activator="{ on, attrs }">
-      <v-btn
-        color="primary"
-        dark
-        class="mb-2"
-        v-bind="attrs"
-        v-on="on"
-      >
-        Criar Usuário
-      </v-btn>
-    </template>
     <v-card>
-      <v-card-title>
-        <span class="text-h5">{{ formTitle }}</span>
-      </v-card-title>
-
       <v-card-text>
         <v-container>
           <v-row>
@@ -106,6 +91,13 @@ export default {
 
   mixins: [usersMixin],
 
+  props: {
+    visible: {
+      type: Boolean,
+      default: false
+    }
+  },
+
   data () {
     return {
       dialog: false,
@@ -137,26 +129,26 @@ export default {
   },
 
   computed: {
-    formTitle () {
-      return this.editedIndex === -1 ? 'Criar Novo Usuário' : 'Editar Usuário'
-    }
-  },
+    show: {
+      get () {
+        return this.visible
+      },
 
-  watch: {
-    dialog (val) {
-      val || this.close()
+      set (value) {
+        if (!value) {
+          this.close()
+        }
+      }
     }
   },
 
   methods: {
     async save () {
-      debugger
-
       await this.saveUsers(this.user)
       this.close()
     },
 
-    resetUser () {
+    reset () {
       this.user = {
         name: '',
         email: '',
@@ -166,11 +158,8 @@ export default {
     },
 
     close () {
-      this.dialog = false
-      this.$nextTick(() => {
-        this.resetUser()
-        this.editedIndex = -1
-      })
+      this.reset()
+      this.$emit('close')
     }
   }
 
