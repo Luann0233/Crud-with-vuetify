@@ -11,6 +11,22 @@
       :items="users"
       :server-items-length="totalItensServer"
     >
+      <template #top>
+        <v-toolbar
+          flat
+        >
+          <v-toolbar-title>Usários</v-toolbar-title>
+          <v-divider
+            class="mx-4"
+            inset
+            vertical
+          />
+          <v-spacer />
+
+          <DialogUsuario />
+        </v-toolbar>
+      </template>
+
       <template #[`item.gender`]="{ item }">
         <v-chip
           :color="getColorGender(item.gender)"
@@ -60,11 +76,13 @@
 import usersMixin from '~/mixins/users.js'
 import FiltrosTabela from '~/components/FiltrosTabela.vue'
 import ButtonAtivaDesativa from '~/components/ButtonAtivaDesativa.vue'
+import DialogUsuario from '~/components/DialogUsuario.vue'
 
 export default {
   components: {
     FiltrosTabela,
-    ButtonAtivaDesativa
+    ButtonAtivaDesativa,
+    DialogUsuario
   },
 
   mixins: [usersMixin],

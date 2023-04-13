@@ -35,6 +35,19 @@ export default {
       }).finally(() => {
         this.loading = false
       })
+    },
+
+    async saveUsers (config) {
+      debugger
+
+      this.loading = true
+      await this.$post('/users', config).then(async (res) => {
+        debugger
+        // sucesso
+        await this.getUsers()
+      }).finally(() => {
+        this.loading = false
+      })
     }
   }
 }
