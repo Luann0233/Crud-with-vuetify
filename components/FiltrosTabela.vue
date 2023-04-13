@@ -1,14 +1,14 @@
 <template>
   <v-row justify="space-around" class="mb-2">
-    <v-col :cols="6">
+    <v-col>
       <SelectStatus v-model="status" />
     </v-col>
 
-    <v-col :cols="6">
+    <v-col>
       <SelectSexo v-model="gender" />
     </v-col>
 
-    <v-col :cols="6">
+    <v-col>
       <v-text-field
         v-model="name"
         label="Nome"
@@ -17,7 +17,7 @@
       />
     </v-col>
 
-    <v-col :cols="6">
+    <v-col>
       <v-text-field
         v-model="email"
         label="Email"
@@ -29,7 +29,6 @@
     <v-col
       align-self="center"
       class="text-align-end"
-      :cols="6"
     >
       <v-btn
         prepend-icon="mdi-magnify"
@@ -69,3 +68,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.text-align-end {
+  text-align: end;
+}
+</style>
