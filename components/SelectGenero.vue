@@ -5,6 +5,7 @@
     :items="items"
     label="Sexo"
     item-text="label"
+    :rules="rules"
     @input="input"
   />
 </template>
@@ -16,6 +17,13 @@ export default {
   name: 'SelectGenero',
 
   mixins: [componentMixin],
+
+  props: {
+    rules: {
+      type: Array,
+      default: () => []
+    }
+  },
 
   data () {
     return {
