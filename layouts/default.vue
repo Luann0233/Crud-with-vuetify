@@ -3,7 +3,6 @@
     <!-- LeftBar -->
     <v-navigation-drawer
       v-model="drawer"
-      color="#ff0000"
       fixed
       app
     >
