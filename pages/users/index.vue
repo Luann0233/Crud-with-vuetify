@@ -1,5 +1,7 @@
 <template>
   <div>
+    <!-- Filtros -->
+    <FiltrosTabela @applyFilters="applyFilters" />
 
     <v-data-table
       :loading="loading"
@@ -42,14 +44,11 @@
 </template>
 
 <script>
-import SelectStatus from '~/components/SelectStatus.vue'
-import SelectSexo from '~/components/SelectSexo.vue'
+import FiltrosTabela from '~/components/FiltrosTabela.vue'
 
 export default {
-
   components: {
-    SelectStatus,
-    SelectSexo
+    FiltrosTabela
   },
 
   data () {
@@ -125,15 +124,27 @@ export default {
         return 'Masculino'
       } else {
         return 'Feminino'
-    }
+      }
     },
-  }
-}
-</script>
 
-<style lang="scss" scoped>
-.text-align-end {
-  text-align: end;
-}
+    async applyFilters (filters) {
+      this.loading = true
+
+      const filtersFormated = {}
+      Object.keys(filters).forEach((key) => {
+        if (filters[key] !== '') {
+          filtersFormated[key] = filters[key]
+        }
+      })
+
+      const config = {
+        params: {
+          ...filters
+        }
+      }
+
+      await this.getUsers(config)
+    }
+  }
 }
 </script>
