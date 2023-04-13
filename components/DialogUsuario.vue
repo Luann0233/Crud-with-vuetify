@@ -5,6 +5,7 @@
   >
     <v-card>
       <v-card-text>
+        <v-form ref="formUsuario" v-model="valid">
         <v-container>
           <v-row>
             <!-- Nome -->
@@ -17,6 +18,8 @@
                 v-model="user.name"
                 label="Nome"
                 :rules="rulesNome"
+                  :counter="191"
+                  required
               />
             </v-col>
 
@@ -30,6 +33,8 @@
                 v-model="user.email"
                 label="E-mail"
                 :rules="rulesEmail"
+                  :counter="191"
+                  required
               />
             </v-col>
 
@@ -39,7 +44,11 @@
               sm="6"
               md="6"
             >
-              <SelectGenero v-model="user.gender" :rules="rulesGenero" />
+                <SelectGenero
+                  v-model="user.gender"
+                  :rules="rulesGenero"
+                  required
+                />
             </v-col>
 
             <!-- Status -->
@@ -48,10 +57,15 @@
               sm="6"
               md="6"
             >
-              <SelectStatus v-model="user.status" :rules="rulesStatus" />
+                <SelectStatus
+                  v-model="user.status"
+                  :rules="rulesStatus"
+                  required
+                />
             </v-col>
           </v-row>
         </v-container>
+        </v-form>
       </v-card-text>
 
       <v-card-actions>
@@ -101,6 +115,7 @@ export default {
   data () {
     return {
       dialog: false,
+      valid: false,
       user: {
         name: '',
         email: '',
@@ -109,11 +124,11 @@ export default {
       },
       rulesNome: [
         value => !!value || 'Obrigatório.',
-        value => (value || '').length <= 191 || 'Máximo 191 caracteres'
+        value => (value || '').length <= 191 || 'O Nome deve ter no Máximo 191 caracteres'
       ],
       rulesEmail: [
         value => !!value || 'Obrigatório.',
-        value => (value || '').length <= 191 || 'Máximo 191 caracteres',
+        value => (value || '').length <= 191 || 'O Email deve ter no Máximo 191 caracteres',
         (value) => {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
           return pattern.test(value) || 'E-mail Inválido.'
@@ -144,6 +159,11 @@ export default {
 
   methods: {
     async save () {
+      const isValid = this.$refs.formUsuario.validate()
+      if (!isValid) {
+        return
+      }
+
       await this.saveUsers(this.user)
       this.close()
     },
