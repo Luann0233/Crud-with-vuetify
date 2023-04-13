@@ -20,6 +20,15 @@
         </v-chip>
       </template>
 
+      <template #[`item.status`]="{ item }">
+        <v-badge
+          :color="getColorStatus(item.status)"
+          dot
+        >
+          {{ getLabelStatus(item.status) }}
+        </v-badge>
+      </template>
+
       <template #[`item.actions`]="{ item }">
         <v-icon
           small
@@ -124,6 +133,22 @@ export default {
         return 'Masculino'
       } else {
         return 'Feminino'
+      }
+    },
+
+    getColorStatus (status) {
+      if (status === 'active') {
+        return 'green'
+      } else {
+        return ''
+      }
+    },
+
+    getLabelStatus (status) {
+      if (status === 'active') {
+        return 'Ativo'
+      } else {
+        return 'Inativo'
       }
     },
 
