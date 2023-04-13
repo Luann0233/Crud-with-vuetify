@@ -29,6 +29,10 @@
         </v-badge>
       </template>
 
+      <template #[`item.onOff`]="{ item }">
+        <ButtonAtivaDesativa :item="item" @ativarUser="ativarUser" />
+      </template>
+
       <template #[`item.actions`]="{ item }">
         <v-icon
           small
@@ -53,16 +57,20 @@
 </template>
 
 <script>
+import usersMixin from '~/mixins/users.js'
 import FiltrosTabela from '~/components/FiltrosTabela.vue'
+import ButtonAtivaDesativa from '~/components/ButtonAtivaDesativa.vue'
 
 export default {
   components: {
-    FiltrosTabela
+    FiltrosTabela,
+    ButtonAtivaDesativa
   },
+
+  mixins: [usersMixin],
 
   data () {
     return {
-      loading: false,
       headers: [
         {
           text: 'ID',
@@ -95,13 +103,17 @@ export default {
           value: 'status'
         },
         {
+          text: 'Ativar/Desativar',
+          align: 'center',
+          sortable: false,
+          value: 'onOff'
+        },
+        {
           text: 'Actions',
           value: 'actions',
           sortable: false
         }
-      ],
-      users: [],
-      totalItensServer: 0
+      ]
     }
   },
 
@@ -110,16 +122,6 @@ export default {
   },
 
   methods: {
-    async getUsers (config) {
-      this.loading = true
-      await this.$get('/users', config).then((res) => {
-        this.users = res.data.data
-        this.totalItensServer = res.data.meta.pagination.total
-      }).finally(() => {
-        this.loading = false
-      })
-    },
-
     getColorGender (gender) {
       if (gender === 'male') {
         return 'blue'
@@ -169,6 +171,11 @@ export default {
       }
 
       await this.getUsers(config)
+    },
+
+    ativarUser (user) {
+      const acao = user.status === 'active' ? 'desativar' : 'ativar'
+      this.ativarDesativarUsuario(user.id, acao)
     }
   }
 }
