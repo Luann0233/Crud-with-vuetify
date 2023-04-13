@@ -16,22 +16,22 @@ export default ({ app }, inject) => {
     return app.$axios.get(`${endpoint2}`, config)
   })
 
-  inject('post', (endpoint, config = {}) => {
+  inject('post', (endpoint, params, config = {}) => {
     const endpoint2 = endpoint && endpoint.charAt(0) === '/' && endpoint.length > 0 ? endpoint : '/' + endpoint
     config = setHeader(config)
-    return app.$axios.post(`${endpoint2}`, config)
+    return app.$axios.post(`${endpoint2}`, params, config)
   })
 
-  inject('patch', (endpoint, config = {}) => {
+  inject('patch', (endpoint, params, config = {}) => {
     const endpoint2 = endpoint && endpoint.charAt(0) === '/' && endpoint.length > 0 ? endpoint : '/' + endpoint
     config = setHeader(config)
-    return app.$axios.patch(`${endpoint2}`, config)
+    return app.$axios.patch(`${endpoint2}`, params, config)
   })
 
-  inject('put', (endpoint, config = {}) => {
+  inject('put', (endpoint, params, config = {}) => {
     const endpoint2 = endpoint && endpoint.charAt(0) === '/' && endpoint.length > 0 ? endpoint : '/' + endpoint
     config = setHeader(config)
-    return app.$axios.put(`${endpoint2}`, config)
+    return app.$axios.put(`${endpoint2}`, params, config)
   })
 
   inject('delete', (endpoint, config = {}) => {
