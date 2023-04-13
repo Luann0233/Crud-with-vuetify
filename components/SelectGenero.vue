@@ -13,7 +13,7 @@
 import componentMixin from '~/mixins/component.js'
 
 export default {
-  name: 'SelectSexo',
+  name: 'SelectGenero',
 
   mixins: [componentMixin],
 

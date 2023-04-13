@@ -5,7 +5,7 @@
     </v-col>
 
     <v-col>
-      <SelectSexo v-model="gender" />
+      <SelectGenero v-model="gender" />
     </v-col>
 
     <v-col>
@@ -42,8 +42,16 @@
 </template>
 
 <script>
+import SelectStatus from '~/components/SelectStatus.vue'
+import SelectGenero from '~/components/SelectGenero.vue'
+
 export default {
   name: 'FiltrosTabela',
+
+  components: {
+    SelectStatus,
+    SelectGenero
+  },
 
   data () {
     return {
