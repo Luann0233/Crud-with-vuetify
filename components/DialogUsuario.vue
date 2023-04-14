@@ -4,6 +4,10 @@
     max-width="500px"
   >
     <v-card>
+      <v-card-title>
+        <span class="text-h5">{{ formTitle }}</span>
+      </v-card-title>
+
       <v-card-text>
         <v-form ref="formUsuario" v-model="valid">
         <v-container>
@@ -154,6 +158,13 @@ export default {
           this.close()
         }
       }
+    },
+
+    formTitle () {
+      return this.user.id ? 'Editar Usuário' : 'Criar Novo Usuário'
+    }
+  },
+
     }
   },
 
