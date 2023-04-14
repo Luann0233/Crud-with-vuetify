@@ -3,6 +3,8 @@
     <!-- Filtros -->
     <FiltrosTabela @applyFilters="applyFilters" />
 
+    {{ loading }}
+
     <v-data-table
       :loading="loading"
       class="elevation-1"
@@ -61,14 +63,14 @@
         <v-icon
           small
           class="mr-2"
-          @click="editUser(item)"
+          @click="sendEditUser(item)"
         >
           mdi-pencil
         </v-icon>
 
         <v-icon
           small
-          @click="deleteItem(item)"
+          @click="deleteUser(item.id)"
         >
           mdi-delete
         </v-icon>
@@ -79,7 +81,12 @@
       </template>
     </v-data-table>
 
-    <DialogUsuario :visible="showDialog" @close="showDialog=false" />
+    <DialogUsuario
+      :visible="showDialog"
+      :user-edit="userEdit"
+      @close="showDialog=false"
+      @teste="atualizaLoading"
+    />
   </div>
 </template>
 
@@ -143,6 +150,7 @@ export default {
           sortable: false
         }
       ],
+      userEdit: {},
       showDialog: false
     }
   },
@@ -203,15 +211,25 @@ export default {
       await this.getUsers(config)
     },
 
-    ativarUser (user) {
+    async ativarUser (user) {
       const acao = user.status === 'active' ? 'desativar' : 'ativar'
-      this.ativarDesativarUsuario(user.id, acao)
+      await this.ativarDesativarUsuario(user.id, acao)
     },
 
-    editUser (user) {
+    sendEditUser (user) {
       this.showDialog = true
-      this.user = Object.assign({}, user)
+      this.userEdit = Object.assign({}, user)
+    },
+
+    async deleteUser (id) {
+      await this.deleteUsuario(id)
+    },
+
+    atualizaLoading (value) {
+      debugger
+      this.loading = value
     }
+
   }
 }
 </script>

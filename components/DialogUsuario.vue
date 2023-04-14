@@ -10,65 +10,65 @@
 
       <v-card-text>
         <v-form ref="formUsuario" v-model="valid">
-        <v-container>
-          <v-row>
-            <!-- Nome -->
-            <v-col
-              cols="12"
-              sm="6"
-              md="6"
-            >
-              <v-text-field
-                v-model="user.name"
-                label="Nome"
-                :rules="rulesNome"
+          <v-container>
+            <v-row>
+              <!-- Nome -->
+              <v-col
+                cols="12"
+                sm="6"
+                md="6"
+              >
+                <v-text-field
+                  v-model="user.name"
+                  label="Nome"
+                  :rules="rulesNome"
                   :counter="191"
                   required
-              />
-            </v-col>
+                />
+              </v-col>
 
-            <!-- Email -->
-            <v-col
-              cols="12"
-              sm="6"
-              md="6"
-            >
-              <v-text-field
-                v-model="user.email"
-                label="E-mail"
-                :rules="rulesEmail"
+              <!-- Email -->
+              <v-col
+                cols="12"
+                sm="6"
+                md="6"
+              >
+                <v-text-field
+                  v-model="user.email"
+                  label="E-mail"
+                  :rules="rulesEmail"
                   :counter="191"
                   required
-              />
-            </v-col>
+                />
+              </v-col>
 
-            <!-- Genero -->
-            <v-col
-              cols="12"
-              sm="6"
-              md="6"
-            >
+              <!-- Genero -->
+              <v-col
+                cols="12"
+                sm="6"
+                md="6"
+              >
                 <SelectGenero
                   v-model="user.gender"
                   :rules="rulesGenero"
                   required
                 />
-            </v-col>
+              </v-col>
 
-            <!-- Status -->
-            <v-col
-              cols="12"
-              sm="6"
-              md="6"
-            >
+              <!-- Status -->
+              <v-col
+                cols="12"
+                sm="6"
+                md="6"
+              >
                 <SelectStatus
                   v-model="user.status"
                   :rules="rulesStatus"
                   required
                 />
-            </v-col>
-          </v-row>
-        </v-container>
+              </v-col>
+            </v-row>
+          </v-container>
         </v-form>
       </v-card-text>
 
@@ -113,6 +113,11 @@ export default {
     visible: {
       type: Boolean,
       default: false
+    },
+
+    userEdit: {
+      type: Object,
+      default: () => {}
     }
   },
 
@@ -165,6 +170,11 @@ export default {
     }
   },
 
+  watch: {
+    userEdit (newValue, _oldValue) {
+      if (newValue) {
+        this.user = Object.assign({}, newValue)
+      }
     }
   },
 
@@ -175,8 +185,25 @@ export default {
         return
       }
 
-      await this.saveUsers(this.user)
+      if (this.user.id) {
+        await this.editUser(this.user)
+      } else {
+        await this.createUser(this.user)
+      }
+
       this.close()
+    },
+
+    async editUser (config) {
+      debugger
+
+      this.$emit('teste', true)
+      await this.$put(`/users/${config.id}`, config).then(async (res) => {
+        // sucesso
+        await this.getUsers()
+      }).finally(() => {
+        this.$emit('teste', false)
+      })
     },
 
     reset () {

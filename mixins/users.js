@@ -12,7 +12,7 @@ export default {
     async getUsers (config) {
       this.loading = true
       await this.$get('/users', config).then((res) => {
-        this.users = res.data.data
+        this.users = [...res.data.data]
         this.totalItensServer = res.data.meta.pagination.total
       }).finally(() => {
         this.loading = false
@@ -37,12 +37,19 @@ export default {
       })
     },
 
-    async saveUsers (config) {
-      debugger
-
+    async createUser (config) {
       this.loading = true
       await this.$post('/users', config).then(async (res) => {
-        debugger
+        // sucesso
+        await this.getUsers()
+      }).finally(() => {
+        this.loading = false
+      })
+    },
+
+    async deleteUsuario (id) {
+      this.loading = true
+      await this.$delete(`/users/${id}`).then(async (res) => {
         // sucesso
         await this.getUsers()
       }).finally(() => {
