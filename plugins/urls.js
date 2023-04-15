@@ -34,7 +34,7 @@ export default ({ app }, inject) => {
     return app.$axios.put(`${endpoint2}`, params, config)
   })
 
-  inject('delete', (endpoint, config = {}) => {
+  inject('Delete', (endpoint, config = {}) => {
     const endpoint2 = endpoint && endpoint.charAt(0) === '/' && endpoint.length > 0 ? endpoint : '/' + endpoint
     config = setHeader(config)
     return app.$axios.delete(`${endpoint2}`, config)

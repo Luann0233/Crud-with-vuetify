@@ -49,6 +49,7 @@ export default {
         }
       ],
       userObj: {},
+      userObjDelete: {},
       showDialogForm: false,
       showModalDelete: false
     }

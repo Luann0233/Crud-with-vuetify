@@ -44,9 +44,10 @@
 
           <!-- Modal Delete Usuario -->
           <v-dialog v-model="showModalDelete" max-width="600px" persistent>
-            <UserDeleteDialog
-              :user="userObj"
-              @closeDialog="showModalDelete=false"
+            <ModalDeleteUser
+              :user="userObjDelete"
+              @close="showModalDelete=false"
+              @atualizarLista="getUsers"
             />
           </v-dialog>
         </v-toolbar>
@@ -72,14 +73,14 @@
         <v-icon
           small
           class="mr-2"
-          @click="sendEditUser(item)"
+          @click="senUserEdit(item)"
         >
           mdi-pencil
         </v-icon>
 
         <v-icon
           small
-          @click="deleteUser(item.id)"
+          @click="sendUserDelete(item)"
         >
           mdi-delete
         </v-icon>
@@ -97,6 +98,7 @@ import UserNewMixin from '~/mixins/userNew.js'
 
 import FiltrosTabela from '~/components/FiltrosTabela.vue'
 import FormUser from '~/components/FormUser.vue'
+import ModalDeleteUser from '~/components/ModalDeleteUser.vue'
 import TagGenero from '~/components/TagGenero.vue'
 import LabelStatus from '~/components/LabelStatus.vue'
 import ButtonAtivaDesativa from '~/components/ButtonAtivaDesativa.vue'
@@ -106,6 +108,7 @@ export default {
   components: {
     FiltrosTabela,
     FormUser,
+    ModalDeleteUser,
     TagGenero,
     LabelStatus,
     ButtonAtivaDesativa
@@ -114,23 +117,16 @@ export default {
   mixins: [UserNewMixin],
 
   methods: {
-    sendEditUser (user) {
+    senUserEdit (user) {
       this.userObj = user
       this.showDialogForm = true
     },
 
-    async deleteUser (id) {
-      this.loading = true
-      await this.$delete(`/users/${id}`).then(async (res) => {
-        // sucesso
-        await this.getUsers()
-      }).finally(() => {
-        this.loading = false
-      })
+    sendUserDelete (user) {
+      this.userObjDelete = user
+      this.showModalDelete = true
     }
-
   }
-
 }
 </script>
 
