@@ -3,21 +3,19 @@
     <!-- Filtros -->
     <FiltrosTabela @applyFilters="applyFilters" />
 
-    {{ loading }}
-
     <v-data-table
-      :loading="loading"
       class="elevation-1"
-      sort-by="id"
+      :loading="loading"
       :headers="headers"
       :items="users"
-      :server-items-length="totalItensServer"
+      :server-items-length="pagination.totalItensServer"
     >
       <template #top>
         <v-toolbar
           flat
         >
           <v-toolbar-title>Usários</v-toolbar-title>
+
           <v-divider
             class="mx-4"
             inset
@@ -26,39 +24,50 @@
 
           <v-spacer />
 
-          <v-btn
-            color="primary"
-            dark
-            class="mb-2"
-            @click="showDialog=true"
+          <!-- Modal Cadastrar/Editar Usuario -->
+          <v-dialog
+            v-model="showDialogForm"
+            max-width="700px"
+            persistent
           >
-            Criar Usuário
-          </v-btn>
+            <template #activator="{ on }">
+              <v-btn color="primary" dark class="mb-2" v-on="on">
+                Criar Usuário
+              </v-btn>
+            </template>
+            <FormUser
+              :user="userObj"
+              @close="showDialogForm=false"
+              @atualizarLista="getUsers"
+            />
+          </v-dialog>
+
+          <!-- Modal Delete Usuario -->
+          <v-dialog v-model="showModalDelete" max-width="600px" persistent>
+            <UserDeleteDialog
+              :user="userObj"
+              @closeDialog="showModalDelete=false"
+            />
+          </v-dialog>
         </v-toolbar>
       </template>
 
+      <!-- Genero -->
       <template #[`item.gender`]="{ item }">
-        <v-chip
-          :color="getColorGender(item.gender)"
-          dark
-        >
-          {{ getLabelGender(item.gender) }}
-        </v-chip>
+        <TagGenero :gender="item.gender" />
       </template>
 
+      <!-- Status -->
       <template #[`item.status`]="{ item }">
-        <v-badge
-          :color="getColorStatus(item.status)"
-          dot
-        >
-          {{ getLabelStatus(item.status) }}
-        </v-badge>
+        <LabelStatus :status="item.status" />
       </template>
 
+      <!-- Btn Alterar Status -->
       <template #[`item.onOff`]="{ item }">
-        <ButtonAtivaDesativa :item="item" @ativarUser="ativarUser" />
+        <ButtonAtivaDesativa :item="item" @updateStatusUser="updateStatusUser" />
       </template>
 
+      <!-- Btns Editar/Apagar -->
       <template #[`item.actions`]="{ item }">
         <v-icon
           small
@@ -80,156 +89,51 @@
         Sem Dados
       </template>
     </v-data-table>
-
-    <DialogUsuario
-      :visible="showDialog"
-      :user-edit="userEdit"
-      @close="showDialog=false"
-      @teste="atualizaLoading"
-    />
   </div>
 </template>
 
 <script>
-import usersMixin from '~/mixins/users.js'
+import UserNewMixin from '~/mixins/userNew.js'
+
 import FiltrosTabela from '~/components/FiltrosTabela.vue'
+import FormUser from '~/components/FormUser.vue'
+import TagGenero from '~/components/TagGenero.vue'
+import LabelStatus from '~/components/LabelStatus.vue'
 import ButtonAtivaDesativa from '~/components/ButtonAtivaDesativa.vue'
-import DialogUsuario from '~/components/DialogUsuario.vue'
 
 export default {
+
   components: {
     FiltrosTabela,
-    ButtonAtivaDesativa,
-    DialogUsuario
+    FormUser,
+    TagGenero,
+    LabelStatus,
+    ButtonAtivaDesativa
   },
 
-  mixins: [usersMixin],
-
-  data () {
-    return {
-      headers: [
-        {
-          text: 'ID',
-          align: 'start',
-          sortable: true,
-          value: 'id'
-        },
-        {
-          text: 'Nome',
-          align: 'start',
-          sortable: true,
-          value: 'name'
-        },
-        {
-          text: 'E-mail',
-          align: 'start',
-          sortable: true,
-          value: 'email'
-        },
-        {
-          text: 'Gênero',
-          align: 'start',
-          sortable: false,
-          value: 'gender'
-        },
-        {
-          text: 'Status',
-          align: 'start',
-          sortable: false,
-          value: 'status'
-        },
-        {
-          text: 'Ativar/Desativar',
-          align: 'center',
-          sortable: false,
-          value: 'onOff'
-        },
-        {
-          text: 'Actions',
-          value: 'actions',
-          sortable: false
-        }
-      ],
-      userEdit: {},
-      showDialog: false
-    }
-  },
-
-  async created () {
-    await this.getUsers()
-  },
+  mixins: [UserNewMixin],
 
   methods: {
-    getColorGender (gender) {
-      if (gender === 'male') {
-        return 'blue'
-      } else {
-        return 'pink'
-      }
-    },
-
-    getLabelGender (gender) {
-      if (gender === 'male') {
-        return 'Masculino'
-      } else {
-        return 'Feminino'
-      }
-    },
-
-    getColorStatus (status) {
-      if (status === 'active') {
-        return 'green'
-      } else {
-        return ''
-      }
-    },
-
-    getLabelStatus (status) {
-      if (status === 'active') {
-        return 'Ativo'
-      } else {
-        return 'Inativo'
-      }
-    },
-
-    async applyFilters (filters) {
-      this.loading = true
-
-      const filtersFormated = {}
-      Object.keys(filters).forEach((key) => {
-        if (filters[key] !== '') {
-          filtersFormated[key] = filters[key]
-        }
-      })
-
-      const config = {
-        params: {
-          ...filters
-        }
-      }
-
-      await this.getUsers(config)
-    },
-
-    async ativarUser (user) {
-      const acao = user.status === 'active' ? 'desativar' : 'ativar'
-      await this.ativarDesativarUsuario(user.id, acao)
-    },
-
     sendEditUser (user) {
-      this.showDialog = true
-      this.userEdit = Object.assign({}, user)
+      this.userObj = user
+      this.showDialogForm = true
     },
 
     async deleteUser (id) {
-      await this.deleteUsuario(id)
-    },
-
-    atualizaLoading (value) {
-      debugger
-      this.loading = value
+      this.loading = true
+      await this.$delete(`/users/${id}`).then(async (res) => {
+        // sucesso
+        await this.getUsers()
+      }).finally(() => {
+        this.loading = false
+      })
     }
 
   }
+
 }
 </script>
+
+<style lang="scss" scoped>
+
+</style>

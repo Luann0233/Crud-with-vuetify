@@ -4,7 +4,7 @@
       <v-btn
         icon
         v-bind="attrs"
-        @click="$emit('ativarUser', item)"
+        @click="$emit('updateStatusUser', item)"
         v-on="on"
       >
         <v-icon>
