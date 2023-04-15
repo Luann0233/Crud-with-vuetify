@@ -50,7 +50,7 @@ export default {
   data () {
     return {
       drawer: false,
-      title: 'Vuetify.js',
+      title: 'CRUD-ONFLY',
       items: [
         {
           icon: 'mdi-apps',
