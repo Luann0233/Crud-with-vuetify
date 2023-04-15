@@ -9,6 +9,8 @@
       :headers="headers"
       :items="users"
       :server-items-length="pagination.totalItensServer"
+      :options.sync="pagination"
+      @pagination="updateListHandler"
     >
       <template #top>
         <v-toolbar
@@ -94,7 +96,7 @@
 </template>
 
 <script>
-import UserNewMixin from '~/mixins/userNew.js'
+import UserMixin from '~/mixins/user.js'
 
 import FiltrosTabela from '~/components/FiltrosTabela.vue'
 import FormUser from '~/components/FormUser.vue'
@@ -115,7 +117,7 @@ export default {
     ButtonAtivaDesativa
   },
 
-  mixins: [UserNewMixin],
+  mixins: [UserMixin],
 
   methods: {
     senUserEdit (user) {
