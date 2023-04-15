@@ -81,8 +81,9 @@
       <v-card-actions>
         <v-spacer />
         <v-btn
-          color="blue darken-1"
+          color="red darken-1"
           text
+          :disabled="sending"
           @click="close()"
         >
           Cancelar
@@ -91,6 +92,7 @@
         <v-btn
           color="blue darken-1"
           text
+          :disabled="sending"
           @click="setAction()"
         >
           {{ btnSaveLabel }}
@@ -157,7 +159,8 @@ export default {
         show: false,
         isError: false,
         message: ''
-      }
+      },
+      sending: false
     }
   },
 
@@ -200,6 +203,7 @@ export default {
 
     async save () {
       this.loading = true
+      this.sending = true
       await this.$post('/users', this.userFields)
         .then((res) => {
           this.alert.show = true
@@ -215,6 +219,7 @@ export default {
           this.alert.message = this.setMessageError(
             error.response.data.data
           )
+          this.sending = false
         }).finally(() => {
           setTimeout(() => {
             this.loading = false
@@ -224,6 +229,7 @@ export default {
 
     async edit () {
       this.loading = true
+      this.sending = true
       await this.$put(`users/${this.userFields.id}`, this.userFields)
         .then((res) => {
           this.alert.show = true
@@ -239,6 +245,7 @@ export default {
           this.alert.message = this.setMessageError(
             error.response.data.data
           )
+          this.sending = false
         }).finally(() => {
           setTimeout(() => {
             this.loading = false
@@ -257,6 +264,8 @@ export default {
     },
 
     reset () {
+      this.sending = false
+
       this.userFields = {
         name: '',
         email: '',
