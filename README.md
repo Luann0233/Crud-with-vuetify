@@ -63,9 +63,9 @@ Colocar validação na criação e edição do usuário:
 } 
 ```
 
- - [ ] Colocar uma forma fácil de ativar ou desativar um usuário. 
- - [ ] Colocar paginação server side. 
- - [ ] Colocar filtro server side (filtrar por name, email, gender e status). 
- - [ ] Tratar exceções para notificar o usuário em caso de erro. 
+ - [x] Colocar uma forma fácil de ativar ou desativar um usuário. 
+ - [x] Colocar paginação server side. 
+ - [x] Colocar filtro server side (filtrar por name, email, gender e status). 
+ - [x] Tratar exceções para notificar o usuário em caso de erro. 
 
 
