@@ -101,6 +101,22 @@ export default {
       }).finally(() => {
         this.loading = false
       })
+    },
+
+    async updateListHandler (paginationInfo) {
+      this.loading = true
+      await this.$get('users?page=' + paginationInfo?.page || 0)
+        .then((response) => {
+          this.users = response.data.data
+          this.pagination = response.data.meta.pagination
+          this.pagination.totalItensServer = response.data.meta.pagination.total
+        })
+        .catch((err) => {
+          console.err(`[EEROR] - ${err}`)
+        })
+        .finally(() => {
+          this.loading = false
+        })
     }
   }
 }

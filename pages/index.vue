@@ -10,6 +10,9 @@
       :items="users"
       :server-items-length="pagination.totalItensServer"
       :options.sync="pagination"
+      :footer-props="{
+        'items-per-page-options': [],
+      }"
       @pagination="updateListHandler"
     >
       <template #top>
