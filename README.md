@@ -21,6 +21,10 @@ Faça em Vue.js uma tela de gestão de usuários (CRUD) utilizando uma api públ
 
  - Faça login nessa plataforma https://gorest.co.in/consumer/login e pegue o "API Access Token" Coloque no header {Authorization: Bearer {token}} de todos os requests.
 
+``` 
+Token: 81661be704d01a49e0b964c9c99cac783036e159ae6aa184ff7119745e75b228
+```
+
 Recursos da API para utilizar no crud para desenvolver a tela.
 
  - **GET** - https://gorest.co.in/public/v1/users - Retorna todos os usuários
