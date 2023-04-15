@@ -51,12 +51,13 @@ export default {
       userObj: {},
       userObjDelete: {},
       showDialogForm: false,
-      showModalDelete: false
+      showModalDelete: false,
+      filters: {}
     }
   },
 
   computed: {
-    ...mapFields(['users', 'pagination', 'options'])
+    ...mapFields(['users', 'pagination'])
   },
 
   async created () {
@@ -68,6 +69,7 @@ export default {
       this.loading = true
       await this.$get('/users', config).then((res) => {
         this.users = [...res.data.data]
+        this.pagination = res.data.meta.pagination
         this.pagination.totalItensServer = res.data.meta.pagination.total
       }).finally(() => {
         this.loading = false
@@ -80,6 +82,7 @@ export default {
           ...filters
         }
       }
+      this.filters = config
 
       await this.getUsers(config)
     },
@@ -103,9 +106,9 @@ export default {
       })
     },
 
-    async updateListHandler (paginationInfo) {
+    updateListHandler (paginationInfo) {
       this.loading = true
-      await this.$get(`users?page=${paginationInfo?.page || 0}`)
+      this.$get(`users?page=${paginationInfo?.page || 0}`, this.filters)
         .then((response) => {
           this.users = response.data.data
           this.pagination = response.data.meta.pagination

@@ -15,8 +15,7 @@ export default () => new Vuex.Store({
       pageCount: 0,
       pageStart: 0,
       pageStop: 0
-    },
-    options: {}
+    }
   },
 
   getters: {
