@@ -105,7 +105,7 @@ export default {
 
     async updateListHandler (paginationInfo) {
       this.loading = true
-      await this.$get('users?page=' + paginationInfo?.page || 0)
+      await this.$get(`users?page=${paginationInfo?.page || 0}`)
         .then((response) => {
           this.users = response.data.data
           this.pagination = response.data.meta.pagination
