@@ -54,13 +54,8 @@ export default {
       items: [
         {
           icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/'
-        },
-        {
-          icon: 'mdi-account-group',
           title: 'Usuários',
-          to: '/users/'
+          to: '/'
         }
       ]
     }
