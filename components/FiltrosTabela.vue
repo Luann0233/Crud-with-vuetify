@@ -1,14 +1,26 @@
 <template>
   <v-row justify="space-around" class="mb-2">
-    <v-col>
+    <v-col
+      cols="12"
+      sm="2"
+      md="2"
+    >
       <SelectStatus v-model="status" />
     </v-col>
 
-    <v-col>
+    <v-col
+      cols="12"
+      sm="2"
+      md="2"
+    >
       <SelectGenero v-model="gender" />
     </v-col>
 
-    <v-col>
+    <v-col
+      cols="12"
+      sm="3"
+      md="3"
+    >
       <v-text-field
         v-model="name"
         label="Nome"
@@ -17,7 +29,11 @@
       />
     </v-col>
 
-    <v-col>
+    <v-col
+      cols="12"
+      sm="3"
+      md="3"
+    >
       <v-text-field
         v-model="email"
         label="Email"
@@ -29,6 +45,9 @@
     <v-col
       align-self="center"
       class="text-align-end"
+      cols="12"
+      sm="2"
+      md="2"
     >
       <v-btn
         prepend-icon="mdi-magnify"
